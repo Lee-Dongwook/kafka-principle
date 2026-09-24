@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+declare -A env_defaults
+env_defaults = (
+    ["CLUSTER_ID"]=""
+)
+
+for key in "${!env_defaults[@]}"; do
+    if [[ -z "${!key:-}"]];  then
+       echo ${key} not set. Setting it to default value: \"${env_defaults[$key]}\"
+       export "$key"="${env_defaults[$key]}"
+    fi
+done

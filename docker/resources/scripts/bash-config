@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -o nounset \
+    -o errexit
+
+if ["${TRACE:-}" == "true]; then
+    set -o verbose \
+        -o xtrace
+fi
