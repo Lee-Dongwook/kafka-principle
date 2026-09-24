@@ -2,16 +2,42 @@
 
 Apache Kafka의 핵심 동작 원리를 학습하기 위한 Java 기반 클론코딩 프로젝트입니다.
 
-## 구조
+## 프로젝트 구조
 
 ```text
-broker/   브로커 실행과 브로커 설정 모델
-common/   공통 어노테이션과 직렬화 인터페이스
-network/  소켓 연결과 요청 송수신 기능
-config/   로컬 브로커 실행 설정
+kafka-principle/
+├── broker/                         # 브로커 실행 및 브로커 설정 모델
+│   └── src/main/java/.../broker/
+│       └── config/                 # Log4j 설정 모델
+├── common/                         # 여러 Java 모듈이 공유하는 기반 타입
+│   └── src/main/java/.../common/
+│       ├── annotation/             # 공개/내부 API 표시 annotation
+│       ├── queue/                  # EventQueue와 이벤트 처리 기반
+│       ├── serialization/          # 바이트 직렬화/역직렬화 계약
+│       ├── DirectoryId.java        # 로그 디렉터리 식별자 관리
+│       ├── ClientIdAndBroker.java  # 클라이언트·브로커 식별 정보
+│       └── Uuid.java               # 128비트 식별자
+├── network/                        # 소켓 연결과 요청 송수신 기반
+├── connect-core/                   # Connect 공개 API의 시작점
+│   └── src/main/java/.../connect/api/
+│       └── health/                 # Connector 상태와 유형 모델
+├── connect-plugin-file/            # 학습용 파일 Source/Sink Connector 플러그인
+│   └── src/main/java/.../file/
+├── docker/                         # Native Kafka 이미지 빌드·릴리스 도구 (Go)
+│   ├── cmd/
+│   │   ├── docker-build-test/      # 이미지 빌드와 기본 검증 CLI
+│   │   └── docker-release/         # Buildx multi-architecture push CLI
+│   ├── internal/containerutil/     # Docker/Podman 공통 실행·빌드 컨텍스트 처리
+│   ├── native/                     # GraalVM native-image Dockerfile과 실행 스크립트
+│   ├── resources/scripts/          # 컨테이너 초기 설정 스크립트
+│   └── server.properties           # 단일 노드 KRaft 기본 설정
+├── config/
+│   └── broker.properties           # 로컬 브로커 실행 설정
+├── build.gradle                    # 공통 Java/Gradle 설정
+└── settings.gradle                 # Java 모듈 등록
 ```
 
-메시지 프로토콜과 디스크 로그 저장 기능은 구현을 시작할 때 각각 `protocol`, `storage` 모듈로 추가합니다.
+현재 Gradle Java 모듈은 `broker`, `common`, `network`, `connect-core`, `connect-plugin-file`입니다. 메시지 프로토콜과 디스크 로그 저장 기능은 구현을 시작할 때 각각 `protocol`, `storage` 모듈로 추가합니다.
 
 ## Docker 레이어의 Go 마이그레이션
 
