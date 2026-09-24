@@ -1,0 +1,29 @@
+#!/bin/sh
+
+if [ -z "${KAFKA_JMX_OPTS-}" ]; then
+    export KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote=true \
+    -Dcom.sun.management.jmxremote.authenticate=false \
+    -Dcom.sun.management.jmxremote.ssl=false "
+fi
+
+export KAFKA_JMX_HOSTNAME=${KAFKA_JMX_HOSTNAME:-$(hostname -i | cut -d" " -f1)}
+
+if [ "${KAFKA_JMX_PORT-}" ]; then
+    export JMX_PORT=$KAFKA_JMX_PORT
+    export KAFKA_JMX_OPTS="${KAFKA_JMX_OPTS-} -Djava.rmi.server.hostname=$KAFKA_JMX_HOSTNAME \
+    -Dcom.sun.management.jmxremote.local.only=false \
+    -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT \
+    -Dcom.sun.management.jmxremote.port=$JMX_PORT"
+fi
+
+result=$(/opt/kafka/kafka.Kafka setup \
+      --default-configs-dir /etc/kafka/docker \
+      --mounted-configs-dir /mnt/shared/config \
+      --final-configs-dir /opt/kafka/config 2>&1) || \
+      echo $result | grep -i "already formatted" || \
+      { echo $result && (exit 1) }
+
+echo "WARNING: THIS IS AN EXPERIMENTAL DOCKER IMAGE RECOMMENDED FOR LOCAL TESTING AND DEVELOPMENT PURPOSES."
+
+KAFKA_LOG4J_CMD_OPTS="-Dkafka.logs.dir=/opt/kafka/logs/ -Dlog4j2.configurationFile=file:/opt/kafka/config/log4j2.yaml"
+exec /opt/kafka/kafka.Kafka start --config /opt/kafka/config/server.properties $KAFKA_LOG4J_CMD_OPTS $KAFKA_JMX_OPTS ${KAFKA_OPTS-}
