@@ -12,7 +12,7 @@ public class LRUCache<K, V> implements Cache<K,V> {
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
                 return this.size() > maxSize;
             }
-        }
+        };
     }
 
     @Override
