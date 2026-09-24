@@ -33,7 +33,7 @@ public interface EventQueue extends AutoCloseable {
 
     default void wakeup() {}
 
-    void close() throws InterruptionException;
+    void close() throws InterruptedException;
 
     void cancelDeferred(String tag);
 

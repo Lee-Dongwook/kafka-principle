@@ -1,7 +1,14 @@
 package io.github.kafkaprinciple.common.queue;
 
+import java.util.OptionalLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-
+/**
+ * Event execution primitive. The full broker scheduler will be added with the
+ * controller runtime; this type currently provides the API's safe event
+ * dispatch behavior.
+ */
 public final class KafkaEventQueue implements EventQueue {
     public static final String EVENT_HANDLER_THREAD_SUFFIX = "event-handler";
 
@@ -48,11 +55,11 @@ public final class KafkaEventQueue implements EventQueue {
             if(exceptionToDeliver == null) {
                 try {
                     event.run();
-                } catch(InterruptionException e) {
-                    log.warn("Interrupted while running event.")
+                } catch (InterruptedException e) {
+                    log.warning("Interrupted while running event.");
                     return true;
                 } catch(Throwable e) {
-                    log.debug("Got exception while running {}.", event, e);
+                    log.log(Level.FINE, "Got exception while running " + event + ".", e);
                 }
             }
 
@@ -67,8 +74,43 @@ public final class KafkaEventQueue implements EventQueue {
             try {
                 event.handleException(t);
             } catch (Exception e) {
-                log.error("Unexpected exception in handleException", e);
+                log.log(Level.SEVERE, "Unexpected exception in handleException", e);
             }
         }
+    }
+
+    private final Logger logger = Logger.getLogger(KafkaEventQueue.class.getName());
+
+    @Override
+    public void enqueue(
+        EventInsertionType insertionType,
+        String tag,
+        java.util.function.UnaryOperator<OptionalLong> deadlineNsCalculator,
+        Event event
+    ) {
+        if (event == null) {
+            throw new IllegalArgumentException("event cannot be null");
+        }
+        new EventContext(event, insertionType, tag).run(logger, null);
+    }
+
+    @Override
+    public void beginShutdown(String source) {
+        // This minimal queue executes events synchronously, so there is no worker to stop.
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public void cancelDeferred(String tag) {
+        // Deferred scheduling is not enabled until the controller runtime is implemented.
+    }
+
+    @Override
+    public void close() {
+        beginShutdown("close");
     }
 }

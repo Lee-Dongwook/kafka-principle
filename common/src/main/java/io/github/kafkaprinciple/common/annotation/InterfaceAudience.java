@@ -1,10 +1,20 @@
 package io.github.kafkaprinciple.common.annotation;
 
-/** 공개 API의 사용 대상을 표시합니다. */
-public final class InterfaceAudience {
-    private InterfaceAudience() {
-    }
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public @interface Public {
-    }
+@InterfaceAudience.Public
+public class InterfaceAudience {
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface Public {}
+
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface Private {}
 }

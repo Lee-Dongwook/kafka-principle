@@ -10,4 +10,4 @@ buildCache {
 
 rootProject.name = 'kafka-principle'
 
-include 'broker', 'common', 'network'
+include 'broker', 'common', 'network', 'connect-core', 'connect-plugin-file'
