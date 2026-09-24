@@ -1,5 +1,5 @@
-pluginMangement {
-    
+pluginManagement {
+
 }
 
 buildCache {
@@ -9,3 +9,5 @@ buildCache {
 }
 
 rootProject.name = 'kafka-principle'
+
+include 'broker', 'common', 'network'

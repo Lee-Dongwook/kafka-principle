@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':common')
+    implementation project(':network')
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
+}

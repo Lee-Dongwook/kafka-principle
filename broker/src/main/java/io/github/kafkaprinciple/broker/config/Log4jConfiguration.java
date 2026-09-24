@@ -1,4 +1,4 @@
-package kafka-principle.docker;
+package io.github.kafkaprinciple.broker.config;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -201,5 +201,4 @@ public class Log4jConfiguration {
         this.configuration = configuration;
     }
 }
-
 
