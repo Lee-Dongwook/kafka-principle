@@ -1,0 +1,11 @@
+pluginMangement {
+    
+}
+
+buildCache {
+    local {
+        enabled = true
+    }
+}
+
+rootProject.name = 'kafka-principle'
