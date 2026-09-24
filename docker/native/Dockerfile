@@ -1,6 +1,6 @@
 FROM ghcr.io/graalvm/graalvm-community:25 AS build-native-image
 
-ARG kafka_url =""
+ARG kafka_url=""
 
 WORKDIR /app
 
@@ -11,15 +11,15 @@ ENV KAFKA_LIBS_DIR="$KAFKA_DIR/libs"
 ENV TARGET_PATH="$KAFKA_DIR/kafka.Kafka"
 
 COPY native-image-configs $NATIVE_CONFIGS_DIR
-COPY native_command.sh native_command.sh
+COPY --chmod=0755 native_command.sh native_command.sh
 
 COPY *kafka.tgz /app
 
-RUN set -eux ; \
-    if [ -n "$kafka_url"]; then \
+RUN set -eux; \
+    if [ -n "$kafka_url" ]; then \
         microdnf install wget gnupg2; \
         wget -nv -O kafka.tgz "$kafka_url"; \
-        wget -nv -O kafka.tgz.asc "$kakfa_url.asc" \
+        wget -nv -O kafka.tgz.asc "$kafka_url.asc"; \
         wget -nv -O KEYS https://downloads.apache.org/kafka/KEYS; \
         gpg --import KEYS; \
         gpg --batch --verify kafka.tgz.asc kafka.tgz; \
@@ -54,8 +54,8 @@ COPY server.properties /etc/kafka/docker/server.properties
 COPY --chown=appuser:root --from=build-native-image /app/kafka/kafka.Kafka /opt/kafka/
 COPY --chown=appuser:root --from=build-native-image /app/kafka/config/log4j2.yaml /etc/kafka/docker/
 COPY --chown=appuser:root --from=build-native-image /app/kafka/config/tools-log4j2.yaml /etc/kafka/docker/
-COPY --chown=appuser:root resources/common-scripts /etc/kafka/docker/
-COPY --chown=appuser:root launch /etc/kafka/docker/
+COPY --chmod=0755 --chown=appuser:root resources/scripts /etc/kafka/docker/
+COPY --chmod=0755 --chown=appuser:root launch /etc/kafka/docker/
 
 USER appuser
 

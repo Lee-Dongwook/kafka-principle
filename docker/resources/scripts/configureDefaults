@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 declare -A env_defaults
-env_defaults = (
-    ["CLUSTER_ID"]=""
+env_defaults=(
+    # Replace this development value in persistent or multi-node deployments.
+    ["CLUSTER_ID"]="5L6g3nShT-eMCtK--X86sw"
 )
 
 for key in "${!env_defaults[@]}"; do
-    if [[ -z "${!key:-}"]];  then
-       echo ${key} not set. Setting it to default value: \"${env_defaults[$key]}\"
+    if [[ -z "${!key:-}" ]]; then
+       echo "$key not set. Setting it to default value: \"${env_defaults[$key]}\""
        export "$key"="${env_defaults[$key]}"
     fi
 done

@@ -60,6 +60,13 @@ func BuildDockerImageRunner(
 	imageType string,
 	kafkaArchive string,
 ) (err error) {
+	if len(command) == 0 || strings.TrimSpace(command[0]) == "" {
+		return errors.New("container build command cannot be empty")
+	}
+	if err := validateImageType(imageType); err != nil {
+		return err
+	}
+
 	tempDir, err := os.MkdirTemp("", "kafka-image-build-")
 	if err != nil {
 		return fmt.Errorf("create temporary directory: %w", err)
@@ -203,9 +210,12 @@ func copyTree(src, dst string) error {
 		sourcePath := filepath.Join(src, entry.Name())
 		targetPath := filepath.Join(dst, entry.Name())
 
-		entryInfo, err := os.Stat(sourcePath)
+		entryInfo, err := os.Lstat(sourcePath)
 		if err != nil {
 			return err
+		}
+		if entryInfo.Mode()&os.ModeSymlink != 0 {
+			return fmt.Errorf("symbolic links are not supported: %q", sourcePath)
 		}
 
 		if entryInfo.IsDir() {
@@ -227,7 +237,9 @@ func copyFile(src, dst string) (err error) {
 	if err != nil {
 		return err
 	}
-	defer source.Close()
+	defer func() {
+		err = errors.Join(err, source.Close())
+	}()
 
 	info, err := source.Stat()
 	if err != nil {
@@ -255,4 +267,13 @@ func copyFile(src, dst string) (err error) {
 	}
 
 	return target.Chmod(info.Mode().Perm())
+}
+
+func validateImageType(imageType string) error {
+	if imageType == "" || imageType == "." || imageType == string(filepath.Separator) ||
+		filepath.Base(imageType) != imageType {
+		return fmt.Errorf("invalid image type %q", imageType)
+	}
+
+	return nil
 }

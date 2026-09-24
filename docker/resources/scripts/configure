@@ -8,13 +8,13 @@ ensure() {
 }
 
 path() {
-    if [[ $2 == "writeable"]]; then
-        if [[ ! -w "$1"]]; then
+    if [[ $2 == "writable" ]]; then
+        if [[ ! -w "$1" ]]; then
             echo "$1 file not writable"
             exit 1
         fi
-    elif [[ $2 == "existence"]]; then
-        if [[ ! -e "$1"]]; then
+    elif [[ $2 == "existence" ]]; then
+        if [[ ! -e "$1" ]]; then
             echo "$1 file does not exist"
             exit 1
         fi
@@ -36,6 +36,8 @@ then
     fi
   fi 
 fi
+
+path /opt/kafka/config/ writable
 
 if [[ -z "${KAFKA_LISTENERS-}" ]] && ( [[ -z "${KAFKA_PROCESS_ROLES-}" ]] || [[ $KAFKA_PROCESS_ROLES != "controller" ]] ) && [[ -n "${KAFKA_ADVERTISED_LISTENERS-}" ]]
 then
@@ -96,4 +98,3 @@ then
     echo "KAFKA_OPTS should contain 'com.sun.management.jmxremote.rmi.port' property. It is required for accessing the JMX metrics externally."
   fi
 fi
-
