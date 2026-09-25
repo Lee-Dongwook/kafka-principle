@@ -2,7 +2,7 @@ package io.github.kafkaprinciple.shell.state;
 
 import io.github.kafkaprinciple.image.MetadataImage;
 import io.github.kafkaprinciple.image.node.MetadataNode;
-import io.github.kafkapriniciple.shell.node.RootShellNode;
+import io.github.kafkaprinciple.shell.node.RootShellNode;
 
 import java.util.function.Consumer;
 

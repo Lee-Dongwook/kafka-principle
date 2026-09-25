@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':image')
+    implementation 'org.jline:jline:3.27.1'
+    implementation 'net.sourceforge.argparse4j:argparse4j:0.9.0'
+}
