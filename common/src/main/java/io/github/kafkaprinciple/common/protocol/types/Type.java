@@ -2,6 +2,7 @@ package io.github.kafkaprinciple.common.protocol.types;
 
 import io.github.kafkaprinciple.common.Uuid;
 import io.github.kafkaprinciple.common.record.internal.BaseRecords;
+import io.github.kafkaprinciple.common.record.internal.MemoryRecords;
 import io.github.kafkaprinciple.common.utils.Utils;
 import io.github.kafkaprinciple.common.utils.internals.ByteUtils;
 
