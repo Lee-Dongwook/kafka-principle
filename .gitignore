@@ -6,6 +6,7 @@ build/
 build_eclipse/
 out/
 .gradle/
+.gradle-local/
 .vscode/
 lib_managed/
 src_managed/

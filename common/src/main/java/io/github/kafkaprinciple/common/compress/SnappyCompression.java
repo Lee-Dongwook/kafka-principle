@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import io.github.kafkaprinciple.common.errors.KafkaException;
 import io.github.kafkaprinciple.common.record.internal.CompressionType;
 import io.github.kafkaprinciple.common.utils.internals.BufferSupplier;
+import io.github.kafkaprinciple.common.utils.internals.ByteBufferInputStream;
 import io.github.kafkaprinciple.common.utils.internals.ByteBufferOutputStream;
 import io.github.kafkaprinciple.common.utils.internals.ChunkedBytesStream;
 

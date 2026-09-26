@@ -35,7 +35,7 @@ public interface Time {
             }
         }
     }
-    
+
     default Timer timer(long timeoutMs) {
         return new Timer(this, timeoutMs);
     }
@@ -45,20 +45,19 @@ public interface Time {
     }
 
     default <T> T waitForFuture(
-        Future<T> future,
-        long deadlineNs
-    ) throws TimeoutException, InterruptedException, ExecutionException {
+            Future<T> future,
+            long deadlineNs) throws TimeoutException, InterruptedException, ExecutionException {
         TimeoutException timeoutException = null;
         while (true) {
-            long nowNs = nanaseconds();
+            long nowNs = nanoseconds();
             if (deadlineNs <= nowNs) {
                 throw (timeoutException == null) ? new TimeoutException() : timeoutException;
             }
             long deltaNs = deadlineNs - nowNs;
             try {
                 return future.get(deltaNs, TimeUnit.NANOSECONDS);
-            } catch (TimeoutException t) {
-                timeoutException = t;
+            } catch (java.util.concurrent.TimeoutException t) {
+                timeoutException = new TimeoutException(t);
             }
         }
     }

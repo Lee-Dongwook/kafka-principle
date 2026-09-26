@@ -18,7 +18,7 @@ import io.github.kafkaprinciple.common.compress.Lz4BlockOutputStream.FLG;
 import static io.github.kafkaprinciple.common.compress.Lz4BlockOutputStream.LZ4_FRAME_INCOMPRESSIBLE_MASK;
 import static io.github.kafkaprinciple.common.compress.Lz4BlockOutputStream.MAGIC;
 
-public class Lz4BlockInputStream {
+public final class Lz4BlockInputStream extends InputStream {
     public static final String PREMATURE_EOS = "Stream ended prematurely";
     public static final String NOT_SUPPORTED = "Stream unsupported (invalid magic bytes)";
     public static final String BLOCK_HASH_MISMATCH = "Block checksum mismatch";

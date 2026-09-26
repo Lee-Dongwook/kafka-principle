@@ -2,6 +2,7 @@ package io.github.kafkaprinciple.common.record.internal;
 
 import io.github.kafkaprinciple.common.record.TimestampType;
 import io.github.kafkaprinciple.common.utils.internals.BufferSupplier;
+import io.github.kafkaprinciple.common.utils.internals.ByteBufferOutputStream;
 import io.github.kafkaprinciple.common.utils.internals.CloseableIterator;
 
 public interface MutableRecordBatch extends RecordBatch {
@@ -9,7 +10,7 @@ public interface MutableRecordBatch extends RecordBatch {
 
     void setMaxTimestamp(TimestampType timestampType, long maxTimestamp);
 
-    void setPartiotionLeaderEpoch(int epoch);
+    void setPartitionLeaderEpoch(int epoch);
 
     void writeTo(ByteBufferOutputStream outputStream);
 

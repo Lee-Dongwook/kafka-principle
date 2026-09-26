@@ -8,6 +8,7 @@ import net.jpountz.xxhash.XXHashFactory;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import io.github.kafkaprinciple.common.record.internal.CompressionType;
 import io.github.kafkaprinciple.common.utils.internals.ByteUtils;
 
 public final class Lz4BlockOutputStream extends OutputStream {
