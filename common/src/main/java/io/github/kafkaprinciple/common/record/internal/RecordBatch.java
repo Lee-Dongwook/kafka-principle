@@ -73,6 +73,7 @@ public interface RecordBatch extends Iterable<Record>{
     default Optional<Long> offsetOfMaxTimestamp(int maxRecordBodySize) {
         if (magic() == RecordBatch.MAGIC_VALUE_V0)
             return Optional.empty();
+        long maxTimestamp = maxTimestamp();
         try (CloseableIterator<Record> iter = streamingIterator(BufferSupplier.create(), maxRecordBodySize)) {
             while (iter.hasNext()) {
                 Record record = iter.next();
