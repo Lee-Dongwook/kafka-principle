@@ -1,11 +1,13 @@
 package io.github.kafkaprinciple.common.record.internal;
 
+import io.github.kafkaprinciple.common.record.TimestampType;
+import io.github.kafkaprinciple.common.utils.internals.BufferSupplier;
+import io.github.kafkaprinciple.common.utils.internals.CloseableIterator;
+
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.OptionalLong;
-
-import io.github.kafkaprinciple.common.utils.internals.BufferSupplier;
 
 public interface RecordBatch extends Iterable<Record>{
     byte MAGIC_VALUE_V0 = 0;
@@ -26,7 +28,7 @@ public interface RecordBatch extends Iterable<Record>{
 
     long maxTimestamp();
 
-    TimestampType TimestampType();
+    TimestampType timestampType();
 
     long baseOffset();
 
