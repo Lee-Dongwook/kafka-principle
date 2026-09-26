@@ -1,0 +1,37 @@
+ext {
+  versions = [:]
+  libs = [:]
+}
+
+def defaultScala213Version = '2.13.18'
+if(hasProperty('scalaVersion')) {
+    if(scalaVersion == '2.13') {
+        versions["scala"] = defaultScala213Version
+    } else {
+        versions ["scala"] = scalaVersion
+    }
+} else {
+    versions["scala"] = defaultScala213Version
+}
+
+if(!versions.scala.contains('-')) {
+    versions["baseScala"] = versions.scala.subString(0, versions.scala.lastIndexOf("."))
+} else {
+    versions["baseScala"] = versions.scala
+}
+
+versions += [
+    
+]
+
+libs += [
+    jacksonAnnotations: "com.fasterxml.jackson.core:jackson-annotations:$versions.jacksonAnnotations",
+    jacksonDatabind: "com.fasterxml.jackson.core:jackson-databind:$versions.jackson",
+    jacksonDataformatCsv: "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$versions.jackson",
+    jacksonDataformatYaml: "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$versions.jackson",
+    jacksonJDK8Datatypes: "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$versions.jackson",
+    jacksonBlackbird: "com.fasterxml.jackson.module:jackson-module-blackbird:$versions.jackson",
+    slf4jApi: "org.slf4j:slf4j-api:$versions.slf4j",
+    slf4jLog4j2: "org.apache.logging.log4j:log4j-slf4j-impl:$versions.log4j2",
+    metrics: "com.yammer.metrics:metrics-core:$versions.metrics",
+]

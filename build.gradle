@@ -1,3 +1,19 @@
+import org.ajoberstart.grgit.Grgit
+import org.gradle.api.artifacts.FileCollectionDependency
+import java.nio.charset.StandardCharsets
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    apply from "$rootDir/dependencies.gradle"
+
+    dependencies {
+        classpath "org:ajoberstar.grgit:grgit-core:$versions.grgit"
+    }
+}
+
 allprojects {
     group = 'io.github.kafkaprinciple'
     version = '0.1.0-SNAPSHOT'
