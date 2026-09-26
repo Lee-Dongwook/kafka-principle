@@ -21,7 +21,7 @@ public abstract class RecordsSend<T extends BaseRecords> implements Send {
         this.remaining = maxBytesToWrite;
     }
 
-    @Override 
+    @Override
     public boolean completed() {
         return remaining <= 0 && !pending;
     }
