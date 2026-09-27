@@ -1,0 +1,24 @@
+Configuration:
+  Properties:
+    Property:
+      - name: "logPattern"
+        value: "[%d] %p %m (%c)%n"
+
+  Appenders:
+    Console:
+      name: STDERR
+      target: SYSTEM_ERR
+      PatternLayout:
+        pattern: "${logPattern}"
+
+  Loggers:
+    Root:
+      level: INFO
+      AppenderRef:
+        - ref: STDERR
+
+    Logger:
+      - name: io.github.kafkaprinciple.raft
+        level: INFO
+      - name: io.github.kafkaprinciple.snapshot
+        level: INFO
