@@ -2,6 +2,7 @@ package io.github.kafkaprinciple.common.record.internal;
 
 import io.github.kafkaprinciple.common.compress.Compression;
 import io.github.kafkaprinciple.common.errors.CorruptRecordException;
+import io.github.kafkaprinciple.common.message.KRaftVersionRecord;
 import io.github.kafkaprinciple.common.network.TransferableChannel;
 import io.github.kafkaprinciple.common.record.TimestampType;
 import io.github.kafkaprinciple.common.record.internal.MemoryRecords.RecordFilter.BatchRetention;
