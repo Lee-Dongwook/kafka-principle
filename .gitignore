@@ -66,3 +66,4 @@ kafka.Kafka
 __pycache__
 
 **/.DS_Store
+.metals/
