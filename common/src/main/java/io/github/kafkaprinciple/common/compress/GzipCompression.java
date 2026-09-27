@@ -13,7 +13,6 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import static io.github.kafkaprinciple.common.record.internal.CompressionType.GZIP;
 
