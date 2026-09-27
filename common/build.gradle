@@ -7,8 +7,17 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.16'
 }
 
-def generatedMessageDir = layout.projectDirectory.dir('src/main/java/io/github/kafkaprinciple/common/message')
+def generatedMessageDir = layout.buildDirectory.dir('generated/main/java')
+def generatedMessagePackageDir = generatedMessageDir.map {
+    it.dir('io/github/kafkaprinciple/common/message')
+}
 def messageSpecDir = layout.projectDirectory.dir('src/main/resources/common/message')
+
+sourceSets {
+    main {
+        java.srcDir(generatedMessageDir)
+    }
+}
 
 tasks.register('generateCommonMessages', JavaExec) {
     group = 'build'
@@ -23,7 +32,7 @@ tasks.register('generateCommonMessages', JavaExec) {
 
     args(
         '--package', 'io.github.kafkaprinciple.common.message',
-        '--output', generatedMessageDir.asFile.absolutePath,
+        '--output', generatedMessagePackageDir.get().asFile.absolutePath,
         '--input', messageSpecDir.asFile.absolutePath,
         '--message-class-generators', 'MessageDataGenerator'
     )

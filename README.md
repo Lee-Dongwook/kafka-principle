@@ -46,7 +46,26 @@ kafka-principle/
 └── settings.gradle                 # Java 모듈 등록
 ```
 
-현재 Gradle Java 모듈은 `broker`, `common`, `network`, `connect-core`, `connect-plugin-file`, `image`, `shell`입니다. 일부 `image`, `shell` 클래스는 후속 구현을 위한 `TODO` 골격이며, 현재는 모듈 연결과 컴파일 가능한 API 형태를 먼저 갖춥니다. 메시지 프로토콜과 디스크 로그 저장 기능은 구현을 시작할 때 각각 `protocol`, `storage` 모듈로 추가합니다.
+현재 Gradle Java 모듈은 `broker`, `clients`, `common`, `message`, `network`, `connect-core`, `connect-plugin-file`, `image`, `shell`입니다. 일부 `image`, `shell` 클래스는 후속 구현을 위한 `TODO` 골격이며, 현재는 모듈 연결과 컴파일 가능한 API 형태를 먼저 갖춥니다. 메시지 프로토콜과 디스크 로그 저장 기능은 구현을 시작할 때 각각 `message`, `storage` 모듈로 추가합니다.
+
+## 메시지 코드 생성
+
+`message` 모듈은 Kafka 메시지 JSON 명세를 Java 클래스로 변환하는 코드 생성 전용 모듈입니다. 생성 결과는 Git에 커밋하지 않으며, `common` 모듈의 빌드 디렉터리에만 만듭니다.
+
+```text
+common/src/main/resources/common/message/KRaftVersionRecord.json
+→ :common:generateCommonMessages
+→ common/build/generated/main/java/io/github/kafkaprinciple/common/message/KRaftVersionRecord.java
+→ common 컴파일 소스
+```
+
+명세를 추가하거나 변경한 뒤에는 다음 명령으로 생성 결과를 확인합니다.
+
+```bash
+gradle :common:generateCommonMessages
+```
+
+`common`의 `compileJava` 작업은 이 생성 작업을 먼저 실행합니다. 따라서 생성된 Java 파일은 직접 수정하지 않고 JSON 명세만 수정합니다. IDE에서 생성 클래스를 찾지 못하면 Gradle 프로젝트를 새로고침한 뒤 위 명령을 다시 실행합니다. VS Code에서는 `Java: Clean Java Language Server Workspace`를 실행한 뒤 창을 다시 열면 됩니다.
 
 ## 모놀리식 아키텍처와 도메인 배선
 
