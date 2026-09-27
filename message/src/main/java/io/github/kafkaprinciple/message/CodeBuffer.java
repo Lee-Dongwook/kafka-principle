@@ -26,7 +26,8 @@ public class CodeBuffer {
     }
 
     public void printf(String format, Object... args) {
-        lines.add(String.format(indentSpaces() + format, args));
+        String line = String.format(format, args);
+        lines.add(line.isBlank() ? line : indentSpaces() + line);
     }
 
     public void write(Writer writer) throws IOException {

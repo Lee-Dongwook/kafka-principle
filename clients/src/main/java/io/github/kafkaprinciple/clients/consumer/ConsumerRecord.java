@@ -1,7 +1,7 @@
 package io.github.kafkaprinciple.clients.consumer;
 
-import io.github.kafkaprinciple.commmon.annotation.InterfaceAudience;
-import io.github.kafkaprinciple.common.headers.Headers;
+import io.github.kafkaprinciple.common.annotation.InterfaceAudience;
+import io.github.kafkaprinciple.common.header.Headers;
 import io.github.kafkaprinciple.common.header.internals.RecordHeaders;
 import io.github.kafkaprinciple.common.record.TimestampType;
 import io.github.kafkaprinciple.common.record.internal.RecordBatch;
