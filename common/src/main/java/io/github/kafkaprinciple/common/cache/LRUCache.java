@@ -3,7 +3,7 @@ package io.github.kafkaprinciple.common.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LRUCache<K, V> implements Cache<K,V> {
+public class LRUCache<K, V> implements Cache<K, V> {
     private final LinkedHashMap<K, V> cache;
 
     public LRUCache(final int maxSize) {
