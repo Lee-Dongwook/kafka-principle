@@ -21,8 +21,8 @@ public class ApiException extends KafkaException {
     public ApiException() {
         super();
     }
-    
-    @Override 
+
+    @Override
     public Throwable fillInStackTrace() {
         return this;
     }
