@@ -29,24 +29,24 @@ public class DefaultRecord implements Record {
     private final ByteBuffer value;
     private final Header[] headers;
 
-     DefaultRecord(int sizeInBytes,
-                  byte attributes,
-                  long offset,
-                  long timestamp,
-                  int sequence,
-                  ByteBuffer key,
-                  ByteBuffer value,
-             Header[] headers) {
-         this.sizeInBytes = sizeInBytes;
-         this.attributes = attributes;
-         this.offset = offset;
-         this.timestamp = timestamp;
-         this.sequence = sequence;
-         this.key = key;
-         this.value = value;
-         this.headers = headers;
-     }
-    
+    DefaultRecord(int sizeInBytes,
+            byte attributes,
+            long offset,
+            long timestamp,
+            int sequence,
+            ByteBuffer key,
+            ByteBuffer value,
+            Header[] headers) {
+        this.sizeInBytes = sizeInBytes;
+        this.attributes = attributes;
+        this.offset = offset;
+        this.timestamp = timestamp;
+        this.sequence = sequence;
+        this.key = key;
+        this.value = value;
+        this.headers = headers;
+    }
+
     @Override
     public long offset() {
         return offset;
@@ -72,7 +72,8 @@ public class DefaultRecord implements Record {
     }
 
     @Override
-    public void ensureValid() {}
+    public void ensureValid() {
+    }
 
     @Override
     public int keySize() {
@@ -110,10 +111,10 @@ public class DefaultRecord implements Record {
     }
 
     public static int writeTo(DataOutputStream out,
-                              int offsetDelta,
-                              long timestampDelta,
-                              ByteBuffer key,
-                              ByteBuffer value,
+            int offsetDelta,
+            long timestampDelta,
+            ByteBuffer key,
+            ByteBuffer value,
             Header[] headers) throws IOException {
         int sizeInBytes = sizeOfBodyInBytes(offsetDelta, timestampDelta, key, value, headers);
         ByteUtils.writeVarint(sizeInBytes, out);
@@ -165,7 +166,7 @@ public class DefaultRecord implements Record {
 
         return ByteUtils.sizeOfVarint(sizeInBytes) + sizeInBytes;
     }
-    
+
     @Override
     public boolean hasMagic(byte magic) {
         return magic >= MAGIC_VALUE_V2;
@@ -222,10 +223,10 @@ public class DefaultRecord implements Record {
     }
 
     public static DefaultRecord readFrom(InputStream input,
-                                         long baseOffset,
-                                         long baseTimestamp,
-                                         int baseSequence,
-                                         Long logAppendTime,
+            long baseOffset,
+            long baseTimestamp,
+            int baseSequence,
+            Long logAppendTime,
             int maxRecordBodySize) throws IOException {
         int sizeOfBodyInBytes = ByteUtils.readVarint(input);
         if (sizeOfBodyInBytes < 0)
@@ -242,22 +243,22 @@ public class DefaultRecord implements Record {
         return readFrom(recordBuffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
                 baseSequence, logAppendTime);
     }
-    
+
     public static DefaultRecord readFrom(ByteBuffer buffer,
-                                         long baseOffset,
-                                         long baseTimestamp,
-                                         int baseSequence,
+            long baseOffset,
+            long baseTimestamp,
+            int baseSequence,
             Long logAppendTime) {
         int sizeOfBodyInBytes = ByteUtils.readVarint(buffer);
         return readFrom(buffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
                 baseSequence, logAppendTime);
     }
-    
+
     private static DefaultRecord readFrom(ByteBuffer buffer,
-                                          int sizeOfBodyInBytes,
-                                          long baseOffset,
-                                          long baseTimestamp,
-                                          int baseSequence,
+            int sizeOfBodyInBytes,
+            long baseOffset,
+            long baseTimestamp,
+            int baseSequence,
             Long logAppendTime) {
         if (buffer.remaining() < sizeOfBodyInBytes)
             throw new InvalidRecordException("Invalid record size: expected " + sizeOfBodyInBytes +
@@ -307,12 +308,12 @@ public class DefaultRecord implements Record {
             throw new InvalidRecordException("Found invalid record structure", e);
         }
     }
-    
+
     public static PartialDefaultRecord readPartiallyFrom(InputStream input,
-                                                         long baseOffset,
-                                                         long baseTimestamp,
-                                                         int baseSequence,
-                                                         Long logAppendTime,
+            long baseOffset,
+            long baseTimestamp,
+            int baseSequence,
+            Long logAppendTime,
             int maxRecordBodySize) throws IOException {
         int sizeOfBodyInBytes = ByteUtils.readVarint(input);
         if (sizeOfBodyInBytes < 0)
@@ -325,13 +326,13 @@ public class DefaultRecord implements Record {
         return readPartiallyFrom(input, totalSizeInBytes, baseOffset, baseTimestamp,
                 baseSequence, logAppendTime);
     }
-    
+
     private static PartialDefaultRecord readPartiallyFrom(InputStream input,
-                                                          int sizeInBytes,
-                                                          long baseOffset,
-                                                          long baseTimestamp,
-                                                          int baseSequence,
-                                                          Long logAppendTime) throws IOException {
+            int sizeInBytes,
+            long baseOffset,
+            long baseTimestamp,
+            int baseSequence,
+            Long logAppendTime) throws IOException {
         try {
             byte attributes = (byte) input.read();
             long timestampDelta = ByteUtils.readVarlong(input);
@@ -341,9 +342,8 @@ public class DefaultRecord implements Record {
 
             int offsetDelta = ByteUtils.readVarint(input);
             long offset = baseOffset + offsetDelta;
-            int sequence = baseSequence >= 0 ?
-                DefaultRecordBatch.incrementSequence(baseSequence, offsetDelta) :
-                RecordBatch.NO_SEQUENCE;
+            int sequence = baseSequence >= 0 ? DefaultRecordBatch.incrementSequence(baseSequence, offsetDelta)
+                    : RecordBatch.NO_SEQUENCE;
 
             int keySize = ByteUtils.readVarint(input);
             skipBytes(input, keySize);
@@ -351,7 +351,6 @@ public class DefaultRecord implements Record {
             int valueSize = ByteUtils.readVarint(input);
             skipBytes(input, valueSize);
 
-            
             int numHeaders = ByteUtils.readVarint(input);
             if (numHeaders < 0)
                 throw new InvalidRecordException("Found invalid number of record headers " + numHeaders);
@@ -390,7 +389,7 @@ public class DefaultRecord implements Record {
             }
         }
     }
-    
+
     private static Header[] readHeaders(ByteBuffer buffer, int numHeaders) {
         Header[] headers = new Header[numHeaders];
         for (int i = 0; i < numHeaders; i++) {
@@ -410,45 +409,45 @@ public class DefaultRecord implements Record {
     }
 
     public static int sizeInBytes(int offsetDelta,
-                                  long timestampDelta,
-                                  ByteBuffer key,
-                                  ByteBuffer value,
-                                  Header[] headers) {
+            long timestampDelta,
+            ByteBuffer key,
+            ByteBuffer value,
+            Header[] headers) {
         int bodySize = sizeOfBodyInBytes(offsetDelta, timestampDelta, key, value, headers);
         return bodySize + ByteUtils.sizeOfVarint(bodySize);
     }
 
     public static int sizeInBytes(int offsetDelta,
-                                  long timestampDelta,
-                                  int keySize,
-                                  int valueSize,
-                                  Header[] headers) {
+            long timestampDelta,
+            int keySize,
+            int valueSize,
+            Header[] headers) {
         int bodySize = sizeOfBodyInBytes(offsetDelta, timestampDelta, keySize, valueSize, headers);
         return bodySize + ByteUtils.sizeOfVarint(bodySize);
     }
 
     private static int sizeOfBodyInBytes(int offsetDelta,
-                                         long timestampDelta,
-                                         ByteBuffer key,
-                                         ByteBuffer value,
+            long timestampDelta,
+            ByteBuffer key,
+            ByteBuffer value,
             Header[] headers) {
         int keySize = key == null ? -1 : key.remaining();
         int valueSize = value == null ? -1 : value.remaining();
         return sizeOfBodyInBytes(offsetDelta, timestampDelta, keySize, valueSize, headers);
     }
-    
+
     public static int sizeOfBodyInBytes(int offsetDelta,
-                                        long timestampDelta,
-                                        int keySize,
-                                        int valueSize,
+            long timestampDelta,
+            int keySize,
+            int valueSize,
             Header[] headers) {
-        int size = 1; 
+        int size = 1;
         size += ByteUtils.sizeOfVarint(offsetDelta);
         size += ByteUtils.sizeOfVarlong(timestampDelta);
         size += sizeOf(keySize, valueSize, headers);
         return size;
     }
-    
+
     private static int sizeOf(int keySize, int valueSize, Header[] headers) {
         int size = 0;
         if (keySize < 0)
