@@ -15,7 +15,9 @@ def messageSpecDir = layout.projectDirectory.dir('src/main/resources/common/mess
 
 sourceSets {
     main {
-        java.srcDir(generatedMessageDir)
+        java {
+            srcDirs = ['src/main/java', "${projectDir}/build/generated/main/java"]
+        }
     }
 }
 
