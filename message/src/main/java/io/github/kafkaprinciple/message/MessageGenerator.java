@@ -1,3 +1,4 @@
+
 package io.github.kafkaprinciple.message;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -154,7 +155,7 @@ public final class MessageGenerator {
 
     static final int UNSIGNED_SHORT_MAX = 65535;
 
-    public static final ObjectMapper JSON_SERDE;
+        public static final ObjectMapper JSON_SERDE;
 
     static {
         JSON_SERDE = new ObjectMapper();
@@ -166,10 +167,9 @@ public final class MessageGenerator {
         JSON_SERDE.registerModule(new Jdk8Module());
     }
 
-    private static List<TypeClassGenerator> crateTypeClassGenerators (String packageName,
+    private static List<TypeClassGenerator> createTypeClassGenerators(String packageName,
                                                                       List<String> types) {
         if (types == null) return List.of();
-
         List<TypeClassGenerator> generators = new ArrayList<>();
         for (String type : types) {
             switch (type) {
@@ -192,14 +192,12 @@ public final class MessageGenerator {
                     throw new RuntimeException("Unknown type class generator type '" + type + "'");
             }
         }
-
         return generators;
     }
 
     private static List<MessageClassGenerator> createMessageClassGenerators(String packageName,
                                                                             List<String> types) {
         if (types == null) return List.of();
-
         List<MessageClassGenerator> generators = new ArrayList<>();
         for (String type : types) {
             switch (type) {
@@ -227,10 +225,9 @@ public final class MessageGenerator {
         List<TypeClassGenerator> typeClassGenerators = createTypeClassGenerators(packageName, typeClassGeneratorTypes);
         Set<String> outputFileNames = new HashSet<>();
 
-        List<ParsedSpec> parsedSpec = new ArrayList<>();
+        List<ParsedSpec> parsedSpecs = new ArrayList<>();
         MessageSpec requestHeader = null;
         MessageSpec responseHeader = null;
-
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(inputDir), JSON_GLOB)) {
             for (Path inputPath : directoryStream) {
                 try {
@@ -257,7 +254,7 @@ public final class MessageGenerator {
 
         checkHeaderVersions(parsedSpecs, requestHeader, responseHeader);
 
-         for (ParsedSpec parsedSpec : parsedSpecs) {
+        for (ParsedSpec parsedSpec : parsedSpecs) {
             MessageSpec spec = parsedSpec.spec;
             try {
                 outputFileNames.addAll(
@@ -268,7 +265,6 @@ public final class MessageGenerator {
                 throw new RuntimeException("Exception while processing " + parsedSpec.path.toString(), e);
             }
         }
-
         for (TypeClassGenerator typeClassGenerator : typeClassGenerators) {
             outputFileNames.add(typeClassGenerator.outputName());
             generateAndWriteTypeClasses(outputDir, typeClassGenerator);
@@ -284,8 +280,7 @@ public final class MessageGenerator {
                 }
             }
         }
-
-        System.out.println("MessageGenerator: processed %d Kafka message JSON file(s).%n", numProcessed);
+        System.out.printf("MessageGenerator: processed %d Kafka message JSON file(s).%n", numProcessed);
     }
 
     private static void checkHeaderVersions(List<ParsedSpec> parsedSpecs,
@@ -310,12 +305,11 @@ public final class MessageGenerator {
         }
     }
 
-    static Set<String> generateAndWriteMessageClasses(MessageSpec spec,
+        static Set<String> generateAndWriteMessageClasses(MessageSpec spec,
                                                       String packageName,
                                                       String outputDir,
                                                       List<String> messageClassGeneratorTypes) throws Exception {
         var outputFileNames = new HashSet<String>();
-
         if (spec.hasValidVersion()) {
             List<MessageClassGenerator> generators = createMessageClassGenerators(packageName, messageClassGeneratorTypes);
             for (MessageClassGenerator generator : generators) {
@@ -388,7 +382,7 @@ public final class MessageGenerator {
         }
     }
 
-    static int sizeOfUnsignedVarint(int value) {
+        static int sizeOfUnsignedVarint(int value) {
         int bytes = 1;
         while ((value & 0xffffff80) != 0L) {
             bytes += 1;

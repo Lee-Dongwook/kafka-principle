@@ -7,3 +7,35 @@ dependencies {
     implementation 'com.github.luben:zstd-jni:1.5.6-9'
     implementation 'org.slf4j:slf4j-api:2.0.16'
 }
+
+def generatedMessageDir = layout.buildDirectory.dir('generated/sources/messages/main/java')
+def messageSpecDir = layout.projectDirectory.dir('src/main/resources/common/message')
+
+sourceSets {
+    main {
+        java.srcDir(generatedMessageDir)
+    }
+}
+
+tasks.register('generateCommonMessages', JavaExec) {
+    group = 'build'
+    description = 'Generates common message classes from JSON specifications.'
+
+    dependsOn project(':message').tasks.named('classes')
+    classpath = project(':message').sourceSets.main.runtimeClasspath
+    mainClass = 'io.github.kafkaprinciple.message.MessageGenerator'
+
+    inputs.dir(messageSpecDir)
+    outputs.dir(generatedMessageDir)
+
+    args(
+        '--package', 'io.github.kafkaprinciple.common.message',
+        '--output', generatedMessageDir.get().asFile.absolutePath,
+        '--input', messageSpecDir.asFile.absolutePath,
+        '--message-class-generators', 'MessageDataGenerator'
+    )
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('generateCommonMessages')
+}

@@ -1,0 +1,5 @@
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.18.2'
+    implementation 'net.sourceforge.argparse4j:argparse4j:0.9.0'
+}
