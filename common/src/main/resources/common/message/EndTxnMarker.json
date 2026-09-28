@@ -1,0 +1,14 @@
+{
+  "type": "data",
+  "name": "EndTxnMarker",
+  "validVersions": "0",
+  "flexibleVersions": "none",
+  "fields": [
+    {
+      "name": "CoordinatorEpoch",
+      "type": "int32",
+      "versions": "0+",
+      "about": "The coordinator epoch when appending the record"
+    }
+  ]
+}

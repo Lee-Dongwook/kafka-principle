@@ -86,7 +86,8 @@ public class MemoryRecords extends AbstractRecords {
         return new ByteBufferLogInputStream(buffer, Integer.MAX_VALUE).nextBatchSize();
     }
 
-    public FilterResult filterTo(RecordFilter filter, ByteBuffer destinationBuffer, int maxRecordBodySize) {
+    public FilterResult filterTo(RecordFilter filter, ByteBuffer destinationBuffer,
+            BufferSupplier decompressionBufferSupplier, int maxRecordBodySize) {
         FilterResult filterResult = new FilterResult(destinationBuffer);
         SingleByteBufferOutputStream bufferOutputStream = new SingleByteBufferOutputStream(destinationBuffer);
 
@@ -97,7 +98,7 @@ public class MemoryRecords extends AbstractRecords {
 
             filterResult.bytesRead += batch.sizeInBytes();
 
-            if (batchRentention == BatchRetention.DELETE)
+            if (batchRetention == BatchRetention.DELETE)
                 continue;
 
             final BatchFilterResult iterationResult = filterBatch(batch, decompressionBufferSupplier, filterResult,
@@ -129,7 +130,7 @@ public class MemoryRecords extends AbstractRecords {
                                 maxOffset, retainedRecords.size(), filteredBatchSize);
                     }
                 }
-            } else if (batchRetention == BatchRentention.RETAIN_EMPTY) {
+            } else if (batchRetention == BatchRetention.RETAIN_EMPTY) {
                 if (batch.magic() < RecordBatch.MAGIC_VALUE_V2) {
                     throw new IllegalStateException("Empty batches are only supported for magic v2 and above");
                 }

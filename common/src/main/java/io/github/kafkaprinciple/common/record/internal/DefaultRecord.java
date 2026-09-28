@@ -2,6 +2,7 @@ package io.github.kafkaprinciple.common.record.internal;
 
 import io.github.kafkaprinciple.common.header.Header;
 import io.github.kafkaprinciple.common.header.internals.RecordHeader;
+import io.github.kafkaprinciple.common.errors.InvalidRecordException;
 import io.github.kafkaprinciple.common.record.TimestampType;
 import io.github.kafkaprinciple.common.utils.Utils;
 import io.github.kafkaprinciple.common.utils.internals.ByteUtils;

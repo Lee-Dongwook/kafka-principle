@@ -1,0 +1,14 @@
+{
+  "type": "data",
+  "name": "ControlRecordTypeSchema",
+  "validVersions": "0",
+  "flexibleVersions": "none",
+  "fields": [
+    {
+      "name": "Type",
+      "type": "int16",
+      "versions": "0+",
+      "about": "The type of the control record, such as commit or abort"
+    }
+  ]
+}
