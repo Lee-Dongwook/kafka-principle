@@ -14,9 +14,9 @@ public class ClientQuotaEntity {
     public static final String IP = "ip";
 
     public static boolean isValidEntityType(String entityType) {
-        return Objects.equals(entityType, USER) || 
-            Objects.equals(entityType, CLIENT_ID) ||
-            Objects.equals(entityType, IP);
+        return Objects.equals(entityType, USER) ||
+                Objects.equals(entityType, CLIENT_ID) ||
+                Objects.equals(entityType, IP);
     }
 
     public ClientQuotaEntity(Map<String, String> entries) {
@@ -29,8 +29,10 @@ public class ClientQuotaEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         ClientQuotaEntity that = (ClientQuotaEntity) o;
         return Objects.equals(entries, that.entries);
     }

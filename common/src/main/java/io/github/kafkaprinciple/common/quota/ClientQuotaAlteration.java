@@ -26,8 +26,10 @@ public class ClientQuotaAlteration {
 
         @Override
         public boolean equals(Object o) {
-            if(this == o) return true;
-            if(o == null || getClass() != o.getClass()) return false;
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
             Op that = (Op) o;
             return Objects.equals(key, that.key) && Objects.equals(value, that.value);
         }
@@ -41,7 +43,7 @@ public class ClientQuotaAlteration {
         public String toString() {
             return "ClientQuotaAlteration.Op(key=" + key + ", value=" + value + ")";
         }
-    }   
+    }
 
     private final ClientQuotaEntity entity;
     private final Collection<Op> ops;
