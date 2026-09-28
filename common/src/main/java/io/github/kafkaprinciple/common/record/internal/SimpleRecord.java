@@ -11,7 +11,7 @@ public class SimpleRecord {
     private final ByteBuffer key;
     private final ByteBuffer value;
     private final long timestamp;
-    private final Header[] header;
+    private final Header[] headers;
 
     public SimpleRecord(long timestamp, ByteBuffer key, ByteBuffer value, Header[] headers) {
         Objects.requireNonNull(headers, "Headers must be non-null");

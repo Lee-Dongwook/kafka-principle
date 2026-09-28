@@ -240,6 +240,11 @@ public abstract class AbstractLegacyRecordBatch extends AbstractRecordBatch impl
         return iterator(bufferSupplier);
     }
 
+    @Override
+    public CloseableIterator<Record> streamingIterator(BufferSupplier bufferSupplier, int maxRecordBodySize) {
+        return iterator(bufferSupplier, maxRecordBodySize);
+    }
+
     static void writeHeader(ByteBuffer buffer, long offset, int size) {
         buffer.putLong(offset);
         buffer.putInt(size);

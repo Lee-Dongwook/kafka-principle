@@ -27,9 +27,6 @@ public class FileLogInputStream implements LogInputStream<FileLogInputStream.Fil
     private final FileRecords fileRecords;
     private final ByteBuffer logHeaderBuffer = ByteBuffer.allocate(HEADER_SIZE_UP_TO_MAGIC);
 
-    private RecordBatch fullBatch;
-    private RecordBatch batchHeader;
-
     FileLogInputStream(FileRecords records,
             int start,
             int end) {
@@ -69,6 +66,32 @@ public class FileLogInputStream implements LogInputStream<FileLogInputStream.Fil
         position += batch.sizeInBytes();
         return batch;
     }
+
+    /**
+     * A record batch backed by a file channel. The batch data is loaded only
+     * when a caller needs to inspect it.
+     */
+    public abstract static class FileChannelRecordBatch extends AbstractRecordBatch {
+        protected final long offset;
+        protected final byte magic;
+        protected final FileRecords fileRecords;
+        protected final int position;
+        protected final int batchSize;
+
+        private RecordBatch fullBatch;
+        private RecordBatch batchHeader;
+
+        FileChannelRecordBatch(long offset,
+                byte magic,
+                FileRecords fileRecords,
+                int position,
+                int batchSize) {
+            this.offset = offset;
+            this.magic = magic;
+            this.fileRecords = fileRecords;
+            this.position = position;
+            this.batchSize = batchSize;
+        }
 
     @Override
     public CompressionType compressionType() {
@@ -210,5 +233,6 @@ public class FileLogInputStream implements LogInputStream<FileLogInputStream.Fil
         return "FileChannelRecordBatch(magic: " + magic +
                 ", offset: " + offset +
                 ", size: " + batchSize + ")";
+    }
     }
 }

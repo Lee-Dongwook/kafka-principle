@@ -4,7 +4,7 @@ import io.github.kafkaprinciple.common.network.TransferableChannel;
 
 import java.io.IOException;
 
-public class DefaultRecordsSend<T extends TransferableChannel> extends RecordsSend<T> {
+public class DefaultRecordsSend<T extends TransferableRecords> extends RecordsSend<T> {
     public DefaultRecordsSend(T records) {
         this(records, records.sizeInBytes());
     }

@@ -13,6 +13,8 @@ import io.github.kafkaprinciple.common.utils.internals.ByteUtils;
 import io.github.kafkaprinciple.common.utils.internals.Checksums;
 import io.github.kafkaprinciple.common.utils.internals.SingleByteBufferOutputStream;
 
+import static io.github.kafkaprinciple.common.utils.Utils.wrapNullable;
+
 public final class LegacyRecord {
     public static final int CRC_OFFSET = 0;
     public static final int CRC_LENGTH = 4;
